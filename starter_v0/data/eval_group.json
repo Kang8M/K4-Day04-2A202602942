@@ -1,7 +1,119 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "description": "Ten team-authored Part C cases: five single-turn and five multi-turn cases. All identifiers and public product names are verified against the mock fixtures.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01",
+      "phase": "B",
+      "suite": "group",
+      "query": "Kiểm tra trạng thái SSO ở môi trường staging.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_service_status", "args": {"service": "sso", "environment": "staging"}}]},
+      "metadata": {"type": "single-turn", "what_it_tests": "Routes a shared-service request and preserves the explicitly requested environment."}
+    },
+    {
+      "id": "G02",
+      "phase": "B",
+      "suite": "group",
+      "query": "Kiểm tra phần cứng laptop của tôi giúp nhé.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"type": "single-turn", "what_it_tests": "Does not invent an asset ID when device inspection is requested without one."}
+    },
+    {
+      "id": "G03",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tra trạng thái tài khoản của nhân viên mới bên Nhân sự.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"type": "single-turn", "what_it_tests": "Does not infer an employee ID from a department or role."}
+    },
+    {
+      "id": "G04",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm hướng dẫn xử lý cảnh báo sức khỏe ổ đĩa trên máy Windows.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "search_kb", "args": {"category": "hardware"}}]},
+      "metadata": {"type": "single-turn", "what_it_tests": "Routes a troubleshooting request to the local hardware knowledge base."}
+    },
+    {
+      "id": "G05",
+      "phase": "B",
+      "suite": "group",
+      "query": "Máy in PR-404 không in được; kiểm tra phần mềm của máy in và tìm hướng dẫn xử lý print queue.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "inspect_device", "args": {"asset_id": "PR-404", "check": "software"}}, {"name": "search_kb", "args": {"category": "printing"}}]},
+      "metadata": {"type": "single-turn", "what_it_tests": "Selects both internal inventory diagnostics and relevant KB guidance for one request."}
+    },
+    {
+      "id": "G06",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Phòng họp RM-501 bị lỗi âm thanh."},
+        {"role": "assistant", "content": "Bạn muốn kiểm tra nhóm chẩn đoán nào?"},
+        {"role": "user", "content": "Kiểm tra phần cứng của thiết bị đó."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "inspect_device", "args": {"asset_id": "RM-501", "check": "hardware"}}]},
+      "metadata": {"type": "multi-turn", "what_it_tests": "Carries the explicit asset identifier forward and applies the latest requested check."}
+    },
+    {
+      "id": "G07",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra SSO production giúp mình."},
+        {"role": "assistant", "content": "Mình sẽ kiểm tra SSO production."},
+        {"role": "user", "content": "Sửa lại: kiểm tra SSO staging, không phải production."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_service_status", "args": {"service": "sso", "environment": "staging"}}]},
+      "metadata": {"type": "multi-turn", "what_it_tests": "Uses the user correction rather than the superseded environment."}
+    },
+    { 
+      "id": "G08",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra security của MB-012."},
+        {"role": "assistant", "content": "Mình sẽ kiểm tra security của MB-012."},
+        {"role": "user", "content": "Hủy yêu cầu đó. Không cần gọi tool hay kiểm tra gì nữa."}
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {"no_tool": true},
+      "metadata": {"type": "multi-turn", "what_it_tests": "Cancellation makes the earlier inspection request inapplicable."}
+    },
+    {
+      "id": "G09",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "LT-411 cần ticket medium vì endpoint agent đã stale."},
+        {"role": "assistant", "content": "Mình có thể tạo ticket medium cho LT-411."},
+        {"role": "user", "content": "Hãy hỏi xác nhận trước khi tạo ticket đó."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"type": "multi-turn", "what_it_tests": "Requires an explicit confirmation boundary before a local write action."}
+    },
+    {
+      "id": "G10",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tạo ticket low cho lỗi Wi-Fi trên LT-240."},
+        {"role": "assistant", "content": "Bạn xác nhận tạo ticket low cho lỗi Wi-Fi trên LT-240 chứ?"},
+        {"role": "user", "content": "Tôi xác nhận."},
+        {"role": "user", "content": "Đổi sang ticket high cho lỗi VPN trên LT-411; dùng luôn xác nhận trước đó."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"type": "multi-turn", "what_it_tests": "Invalidates confirmation when both the target asset and ticket payload change."}
+    }
+  ]
 }
