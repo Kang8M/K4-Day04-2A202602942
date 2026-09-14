@@ -114,6 +114,50 @@
       "failure_type": "wrong_boundary",
       "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
       "metadata": {"type": "multi-turn", "what_it_tests": "Invalidates confirmation when both the target asset and ticket payload change."}
+    },
+    {
+      "id": "G11",
+      "phase": "B",
+      "suite": "group",
+      "query": "Kiểm tra giúp mình tiến độ xử lý của ticket LAB-A1B2C3D4 nhé.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_ticket_status",
+            "args": {"ticket_id": "LAB-A1B2C3D4"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "bonus_check_ticket_status",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cứu mã ticket hợp lệ phải gọi check_ticket_status, không nhầm với create_ticket hay inspect_device."
+      }
+    },
+    {
+      "id": "G12",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Hôm trước mình có gửi yêu cầu cấp license Visio trên máy LT-318."},
+        {"role": "assistant", "content": "Bạn có mã ticket đã tạo để mình tra cứu tiến độ không?"},
+        {"role": "user", "content": "Mã vé của mình là LAB-E5F6G7H8, kiểm tra xem đã xong chưa."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_ticket_status",
+            "args": {"ticket_id": "LAB-E5F6G7H8"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_ticket_lookup",
+        "difficulty": "medium",
+        "what_it_tests": "Trong hội thoại nhiều lượt, khi người dùng cung cấp mã ticket, agent phải trích xuất đúng ticket_id và tra cứu tiến độ."
+      }
     }
   ]
 }

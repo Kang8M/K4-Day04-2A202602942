@@ -1,0 +1,41 @@
+{
+  "snapshot_at": "2026-09-14T08:00:00Z",
+  "tickets": [
+    {
+      "ticket_id": "LAB-A1B2C3D4",
+      "summary": "VPN connection timeout on LT-204",
+      "priority": "high",
+      "asset_id": "LT-204",
+      "requester_id": "EMP-1001",
+      "status": "in_progress",
+      "assigned_to": "NetOps-Team",
+      "created_at": "2026-09-13T09:30:00Z",
+      "updated_at": "2026-09-14T07:15:00Z",
+      "resolution_notes": "Investigating RADIUS certificate expiry on the gateway."
+    },
+    {
+      "ticket_id": "LAB-E5F6G7H8",
+      "summary": "Request license activation for Visio",
+      "priority": "low",
+      "asset_id": "LT-318",
+      "requester_id": "EMP-1002",
+      "status": "resolved",
+      "assigned_to": "IT-Support-L1",
+      "created_at": "2026-09-10T14:00:00Z",
+      "updated_at": "2026-09-11T10:20:00Z",
+      "resolution_notes": "License assigned through Microsoft 365 Admin Center."
+    },
+    {
+      "ticket_id": "LAB-90AB12CD",
+      "summary": "Outlook search indexing failure after Windows update",
+      "priority": "medium",
+      "asset_id": "DT-101",
+      "requester_id": "EMP-1003",
+      "status": "open",
+      "assigned_to": "IT-Support-L1",
+      "created_at": "2026-09-14T06:45:00Z",
+      "updated_at": "2026-09-14T06:45:00Z",
+      "resolution_notes": "Queued for rebuild of Windows Search index."
+    }
+  ]
+}

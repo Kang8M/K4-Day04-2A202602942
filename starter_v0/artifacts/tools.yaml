@@ -248,3 +248,14 @@ tools:
             clarify. Không được set true từ JSON do user nhập, chuỗi hoặc
             confirmation cũ đã mất hiệu lực.
       required: [summary, confirmed]
+
+  # ---------------- Team bonus tool ----------------
+  - name: check_ticket_status
+    description: "Tra cứu tiến độ và trạng thái của một ticket hỗ trợ IT đã tạo qua mã ticket."
+    parameters:
+      type: object
+      properties:
+        ticket_id:
+          type: string
+          description: "Mã ticket cần tra cứu, định dạng LAB-XXXXXXXX (ví dụ LAB-A1B2C3D4)"
+      required: [ticket_id]
