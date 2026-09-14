@@ -187,14 +187,14 @@ có thể đối chiếu đóng góp.
 
 ### Lưu Mạnh Hùng — 02942 (Trưởng nhóm)
 
-- **Vai trò/phần việc được nhận:** D — UI & Report Coordinator: dựng Live Chat Streamlit (`chat.py`, `streamlit_app.py`), test kịch bản demo, tổng hợp `REPORT.md`, merge các nhánh về `main`.
-- **Những gì tôi đã thay đổi trong repo chung:** `>> TODO: tự liệt kê`
-- **File hoặc artifact liên quan:** `chat.py`, `streamlit_app.py`, `artifacts/REPORT.md`, `artifacts/version_log.csv`, `transcripts/`
+- **Vai trò/phần việc được nhận:** D — UI & Report Coordinator: dựng Live Chat Streamlit (`chat.py`), test kịch bản demo, tổng hợp `REPORT.md`, merge các nhánh về `main`.
+- **Những gì tôi đã thay đổi trong repo chung:** sửa các file và antifact liên quan
+- **File hoặc artifact liên quan:** `chat.py`, `artifacts/REPORT.md`, `artifacts/version_log.csv`, `transcripts/`
 - **Commit hash hoặc pull request:** `d97ce64` (fix: add version_log.csv, update REPORT.md, create transcripts evidence), `47c5386`/`a8e9f1d`/`016a75f`/`ce68716` (merge & resolve conflict các nhánh khanhdq/hunglm/main)
-- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** `>> TODO`
-- **Khó khăn tôi gặp và cách tôi xử lý:** `>> TODO`
-- **Điều tôi học được từ phần việc này:** `>> TODO`
-- **Nếu làm lại, tôi sẽ cải thiện điều gì:** `>> TODO`
+- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** chạy lệnh run UI bị lỗi, bắt buộc phải tạo một file .py khác để run UI trên browser
+- **Khó khăn tôi gặp và cách tôi xử lý:** Hết quota API liên tục, nên phải nạp $5 sử dụng OpenAI API Key để chạy hệt được test demo
+- **Điều tôi học được từ phần việc này:** Thực nghiệm đo đạc Tool Calling Agent, hiểu được cách test system prompt, eval, red team và sửa lại system_prompt sao cho hiệu quả
+- **Nếu làm lại, tôi sẽ cải thiện điều gì:** đặt câu hỏi với lab coach nhiều hơn trước khi bắt đầu làm bài, để nắm rõ được yêu cầu cũng như kết quả của bài lab
 
 ### Dương Quốc Khánh — 03013
 
