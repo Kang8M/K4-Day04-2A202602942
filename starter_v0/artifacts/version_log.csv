@@ -1,1 +1,3 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_name,metric_before,metric_after,run_file
+v0,A (Prompt Architect),(none),v0+p27467914bc4d+t86e19195220e,27467914bc4d,86e19195220e,"baseline starter artifact, unmodified",Baseline reference only. No hypothesis.,case_accuracy,,,
+v1,A (Prompt Architect),system_prompt.md,v1+p1c0489669ff4+t86e19195220e,1c0489669ff4,86e19195220e,"Rules/Capabilities/Constraints: tool ownership, argument conventions, clarify policy",Naming what each tool owns and forbidding guessed identifiers raises tool_routing_accuracy and argument_accuracy on single-turn cases without adding extra tool calls.,tool_routing_accuracy,,,
