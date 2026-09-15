@@ -220,14 +220,14 @@ có thể đối chiếu đóng góp.
 
 ### Nguyên Ngọc Minh — 02653
 
-- **Vai trò/phần việc được nhận:** B — Tool & Schema Engineer: quản lý `tools.yaml`, chuẩn hóa enums/arguments, đồng bộ tool name, Tavily API.
-- **Những gì tôi đã thay đổi trong repo chung:** `>> TODO: tự liệt kê`
+- **Vai trò/phần việc được nhận:** B — Tool & Schema Engineer: quản lý `artifacts/tools.yaml`, chuẩn hóa enums/arguments, đồng bộ tool name giữa `tools.yaml` ↔ `tools/__init__.py` ↔ eval files, xác nhận Tavily API hoạt động.
+- **Những gì tôi đã thay đổi trong repo chung:** Viết lại toàn bộ phần `description` của 9 tool trong `artifacts/tools.yaml` — từ mô tả một dòng không có routing guidance thành description rõ ràng về khi nào dùng, khi nào không dùng và ranh giới với các tool khác. Cụ thể: thêm hướng dẫn gọi `clarify` khi thiếu `asset_id`/`employee_id`; làm rõ `check_service_status` chỉ dùng cho shared service, không dùng để chẩn đoán thiết bị cụ thể; ghi rõ `format_incident_report` chỉ format dữ liệu đã có, không thu thập thêm; thêm cảnh báo cụ thể cho `create_ticket` về luồng xác nhận bắt buộc và các trường hợp confirmation mất hiệu lực; liệt kê rõ các trường bị cấm gửi ra ngoài trong `search_device_info`. Kiểm tra đồng bộ tool names bằng script Python đảm bảo `yaml_names == init_names` và không có tên nào trong eval_base.json bị thiếu khai báo. Smoke test tất cả 9 tool (local + Tavily) để xác nhận implementation không bị broken trước khi sửa declarations.
 - **File hoặc artifact liên quan:** `artifacts/tools.yaml`
-- **Commit hash hoặc pull request:** `9cab567` (add tools)
-- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** `>> TODO`
-- **Khó khăn tôi gặp và cách tôi xử lý:** `>> TODO`
-- **Điều tôi học được từ phần việc này:** `>> TODO`
-- **Nếu làm lại, tôi sẽ cải thiện điều gì:** `>> TODO`
+- **Commit hash hoặc pull request:** `9cab567` (add tools — baseline declaration), commit cải tiến description/schema sau khi phân tích failure từ eval_base.json
+- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** Quyết định **không thay đổi schema** (enum values, required fields) của bất kỳ tool nào mà chỉ cải thiện `description` và bổ sung hướng dẫn routing. Lý do: schema đã đồng bộ với eval_base.json và `__init__.py` — đổi enum hoặc field name sẽ phá vỡ eval scoring và cần sync ở nhiều file cùng lúc, rủi ro regression cao. Vấn đề thật là model không hiểu khi nào dùng tool nào, nên tập trung fix ở description là đủ mà an toàn hơn.
+- **Khó khăn tôi gặp và cách tôi xử lý:** Ban đầu không rõ tại sao smoke test pass hết mà routing vẫn sai — nhầm tưởng smoke test là đủ bằng chứng. Sau khi đọc kỹ eval_base.json và field `what_it_tests` trong metadata từng case, mới hiểu smoke test chỉ kiểm tra implementation Python, còn routing accuracy phụ thuộc vào description mà model đọc. Xử lý bằng cách đọc lần lượt: `eval_base.json` → `TOOL.md` của tool liên quan → `tool.py` để hiểu đúng behavior → viết description dựa trên các failure pattern đã thấy.
+- **Điều tôi học được từ phần việc này:** Tool name, description và JSON schema đều là một phần của prompt — model routing phụ thuộc trực tiếp vào chất lượng của các mô tả này, không chỉ vào implementation. Một description thiếu ranh giới (khi nào dùng / khi nào không) có thể khiến model chọn sai tool dù tool đó chạy hoàn toàn đúng.
+- **Nếu làm lại, tôi sẽ cải thiện điều gì:** Chạy eval baseline trước khi sửa tools.yaml để có số liệu thật làm mốc so sánh, thay vì suy luận failure chỉ từ đọc file. Ngoài ra sẽ thêm mapping ví dụ cụ thể (Outlook → category=email, VPN client → category=vpn) vào description của `search_kb.category` và `policy.policy_area` vì đây là nhóm lỗi wrong_arg_value vẫn còn tồn tại ở v3 (H03, extension cases E01–E03).
 
 ### Đinh Quang Lâm — 02875
 
