@@ -213,16 +213,16 @@ Coach Lab kỹ hơn về quy trình thực hiện từng bước từ khi thực
 đến khi kết thúc lab, và output dự kiến thật sự như thế nào, thay vì
 cố hiểu thông tin từ README.md.
 
-### Nguyễn Công Minh — 02774
+###  Hoàng Công Minh — 02774
 
 - **Vai trò/phần việc được nhận:** C — Eval & Red-Team: tác giả 10 case `eval_group.json` (G01–G10), kiểm thử 12 adversarial attack.
-- **Những gì tôi đã thay đổi trong repo chung:** `>> TODO: tự liệt kê`
+- **Những gì tôi đã thay đổi trong repo chung:** Hoàn thiện data/eval_group.json với đúng 10 team-authored evaluation cases từ G01 đến G10, gồm 5 single-turn và 5 multi-turn. Các case tập trung kiểm tra tool routing, argument passing, xử lý thông tin còn thiếu, multi-turn context, user correction, cancellation và confirmation boundary. Tôi cũng thực hiện validation JSON/schema và chạy các bộ evaluation Group, Base, Extension và Adversarial để thu thập evidence.
 - **File hoặc artifact liên quan:** `data/eval_group.json`, `data/eval_adversarial.json`
 - **Commit hash hoặc pull request:** `a957c34` (Minhhc: Hoan thanh part C — Eval & Red-Team)
-- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** `>> TODO`
-- **Khó khăn tôi gặp và cách tôi xử lý:** `>> TODO`
-- **Điều tôi học được từ phần việc này:** `>> TODO`
-- **Nếu làm lại, tôi sẽ cải thiện điều gì:** `>> TODO`
+- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** Thiết kế G01–G10 theo hướng bao phủ cả single-turn và multi-turn, thay vì chỉ kiểm tra việc chọn đúng tool. Tôi đặc biệt đưa vào các tình huống missing asset/employee ID, context carry-over, correction, cancellation và confirmation invalidation để kiểm tra các safety boundary quan trọng của Helpdesk Agent trong hội thoại thực tế.
+- **Khó khăn tôi gặp và cách tôi xử lý:** Khó khăn chính là quá trình evaluation gặp provider_error, khiến một số case không được đo lường. Ban đầu OpenAI/OpenRouter gặp lỗi API key; sau khi cập nhật cấu hình, tôi chuyển sang kiểm tra bằng Gemini và xác nhận provider hoạt động qua preflight. Một số Base cases sau đó đã chạy thành công, trong đó 9/30 case được đo lường và cả 9 đều PASS, nhưng vẫn còn các case bị provider_error. Vì vậy, tôi phân biệt rõ giữa test thực sự FAIL và test chưa được đo lường do lỗi provider, đồng thời lưu lại evaluation artifacts làm evidence thay vì kết luận sai về chất lượng agent.
+- **Điều tôi học được từ phần việc này:** ôi hiểu rõ hơn cách thiết kế evaluation cases cho AI agent, đặc biệt là việc đánh giá không chỉ output mà còn tool selection, tool arguments, multi-turn context và safety boundaries. Tôi cũng học được cách sử dụng adversarial testing để kiểm tra các tình huống như prompt/system-prompt exfiltration, role spoofing, forged tool result, argument smuggling, sensitive data exposure, unsupported tool abuse, injection từ KB/policy và stale confirmation.
+- **Nếu làm lại, tôi sẽ cải thiện điều gì:** Tôi sẽ kiểm tra provider configuration và chạy preflight đầy đủ trước khi bắt đầu evaluation để tránh mất thời gian với các provider_error. Tôi cũng sẽ chạy từng nhóm test nhỏ trước khi chạy toàn bộ suite, từ đó phát hiện sớm các lỗi liên quan đến provider, tool calling hoặc multi-turn context và thu thập evidence đầy đủ hơn cho cả 10 group cases và 12 adversarial cases.
 
 ### Nguyên Ngọc Minh — 02653
 
