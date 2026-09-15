@@ -238,13 +238,16 @@ cố hiểu thông tin từ README.md.
 ### Đinh Quang Lâm — 02875
 
 - **Vai trò/phần việc được nhận:** E — Security & Bonus Tool: rà soát data leakage (Tavily), kiểm tra ticket rác, code bonus tool `check_ticket_status`.
-- **Những gì tôi đã thay đổi trong repo chung:** `>> TODO: tự liệt kê`
-- **File hoặc artifact liên quan:** `tools/` (bonus tool `check_ticket_status`), `artifacts/tools.yaml`
+- **Những gì tôi đã thay đổi trong repo chung:**
+  - Xây dựng hoàn chỉnh bonus tool `check_ticket_status` gồm `tools/check_ticket_status/tool.py` và `tools/check_ticket_status/TOOL.md`.
+  - Khai báo schema chuẩn hóa cho tool trong `artifacts/tools.yaml` (side_effect: false, mô tả rõ định dạng input `LAB-XXXXXXXX`).
+  - Rà soát rủi ro data leakage qua external tool (Tavily), kiểm tra việc cô lập dữ liệu nhạy cảm và kiểm tra tình trạng sinh file ticket rác trong thư mục `tickets/`.
+- **File hoặc artifact liên quan:** `tools/check_ticket_status/` (`tool.py`, `TOOL.md`), `artifacts/tools.yaml`, `helpdesk_data/tickets_mock.json`
 - **Commit hash hoặc pull request:** `ed43427` (feat(tool): check_ticket_status — bonus tools)
-- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** `>> TODO`
-- **Khó khăn tôi gặp và cách tôi xử lý:** `>> TODO`
-- **Điều tôi học được từ phần việc này:** `>> TODO`
-- **Nếu làm lại, tôi sẽ cải thiện điều gì:** `>> TODO`
+- **Một quyết định kỹ thuật tôi đã đưa ra và lý do:** Thiết kế `check_ticket_status` là read-only (`side_effect: false`) và thực hiện sanitize/validate input bằng regex `^LAB-[A-F0-9]{8}$` ngay ở đầu hàm trước khi truy cập hệ thống file. Quyết định này giúp ngăn chặn triệt để lỗ hổng Path Traversal (`../`), đồng thời chỉ trả về các trường thông tin cần thiết (`status`, `summary`, `priority`, `asset_id`, `created_at`, `assigned_to`), không làm rò rỉ metadata hệ thống.
+- **Khó khăn tôi gặp và cách tôi xử lý:** Tool cần hỗ trợ tra cứu cả ticket mới sinh trong phiên runtime (`tickets/*.json`) lẫn ticket lịch sử trong cơ sở dữ liệu giả lập (`helpdesk_data/tickets_mock.json`), đồng thời model dễ nhầm lẫn hoặc không trích xuất đúng ticket ID trong ngữ cảnh multi-turn. Tôi đã giải quyết bằng cách thiết kế luồng tìm kiếm kép (ưu tiên runtime rồi fallback sang mock DB), kèm chuẩn hóa chuỗi (`.strip().upper()`), đồng thời tối ưu mô tả argument trong `tools.yaml` với ví dụ trực quan. Nhờ đó, cả 2 test case G11 và G12 đều đạt PASS 100%.
+- **Điều tôi học được từ phần việc này:** Hiểu sâu về nguyên tắc phòng thủ đa tầng (Defense in Depth) trong Tool Calling / Agentic AI: không bao giờ tin tưởng tuyệt đối vào output của LLM mà luôn phải có schema guard và validation chặt chẽ ở tầng code Python; đồng thời nhận diện rõ ranh giới an toàn giữa tool đọc (read-only) và tool ghi (side-effect).
+- **Nếu làm lại, tôi sẽ cải thiện điều gì:** Bổ sung cơ chế Access Control / Authorization check (chỉ cho phép user tra cứu các ticket thuộc sở hữu của mình hoặc phòng ban mình, tránh nguy cơ Ticket ID Enumeration để xem lén sự cố của người khác) và thêm rate-limiting chống brute-force ID.
 
 Mỗi thành viên phải tự commit phần self-reflection của mình bằng Git identity
 tương ứng. Reflection phải dẫn đến contribution artifact/commit đã nêu ở trên,
